@@ -5,6 +5,7 @@ name: Docker images
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-images:
