@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         runtime:
-          - name: gtk-4.10.1-adw-1.3.1
+          - name: gtk-4.10
             gtktag: 4.10.1
             adwtag: 1.3.1
       fail-fast: false
@@ -40,8 +40,8 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            ${{ matrix.runtime.name }}
+          # tags: |
+          #   ${{ matrix.runtime.name }}
             
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
