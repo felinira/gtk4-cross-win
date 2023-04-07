@@ -2,14 +2,14 @@
 
 ## Prebuilt images
 
-Images can be found on [DockerHub](https://hub.docker.com/r/mglolenstine/gtk4-cross/tags) or [GitHub container repository](https://github.com/MGlolenstine/gtk4-cross/pkgs/container/gtk4-cross).
+Images can be found on [DockerHub](https://hub.docker.com/r/66Leo66/gtk4-cross/tags) or [GitHub container repository](https://github.com/66Leo66/gtk4-cross/pkgs/container/gtk4-cross).
 
 ### To pull from DockerHub
 
 Example for GTK 4.8:
 
 ```bash
-docker pull mglolenstine/gtk4-cross:rust-gtk-4.8
+docker pull 66Leo66/gtk4-cross:rust-gtk-4.8
 ```
 
 ### To pull from GitHub container repository
@@ -17,7 +17,7 @@ docker pull mglolenstine/gtk4-cross:rust-gtk-4.8
 Example for GTK 4.8:
 
 ```bash
-docker pull ghcr.io/mglolenstine/gtk4-cross:rust-gtk-4.8
+docker pull ghcr.io/66Leo66/gtk4-cross:rust-gtk-4.8
 ```
 
 ## Cross compilation

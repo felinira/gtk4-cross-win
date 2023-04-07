@@ -22,7 +22,7 @@ TAG=${TAG:-"$IMAGE-$GTK-$ADW"}
 mkdir -p "tmp/$IMAGE"
 cp -rL "$IMAGE" "tmp/"
 # Replace the remote image with  a local base.
-sed -i "s/FROM mglolenstine\/gtk4-cross:%GTKTAG%/FROM $BASE/g" "tmp/$IMAGE/Dockerfile"
+sed -i "s/FROM 66Leo66\/gtk4-cross:%GTKTAG%/FROM $BASE/g" "tmp/$IMAGE/Dockerfile"
 # Replace GTK and Adwaita versions.
 sed -i "s/%GTKTAG%/$GTK/g" "tmp/$IMAGE/Dockerfile" && sed -i "s/%ADWTAG%/$ADW/g" "tmp/$IMAGE/Dockerfile"
 

@@ -15,7 +15,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # Set the rust linker to gcc
 # RUN echo "[target.x86_64-pc-windows-gnu]\nlinker = \"x86_64-w64-mingw32-gcc\"\nar = \"x86_64-w64-mingw32-gcc-ar\"" > /home/rust/.cargo/config
 RUN dnf install -y gcc
-RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_dependency_scanner.git
+RUN . ~/.cargo/env && cargo install --git https://github.com/66Leo66/peldd_dependency_scanner.git
 
 FROM fedora:37
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
