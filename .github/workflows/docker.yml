@@ -6,7 +6,7 @@ on:
     - cron: '30 5 * * *'
   pull_request:
 
-name: Build / Deploy Docker Images
+name: Docker
 
 env:
   REGISTRY: ghcr.io
@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-images:
-    name: Build & push Docker images
+    name: Build Images
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,8 +29,8 @@ jobs:
             gtktag: main
             adwtag: main
           - name: gtk-4.10
-            gtktag: 4.10.1
-            adwtag: 1.3.1
+            gtktag: 4.10.3
+            adwtag: 1.3.2
       fail-fast: false
 
     steps:
@@ -48,7 +48,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for ${{ matrix.runtime.name }}
+      - name: Extract Metadata for ${{ matrix.runtime.name }}
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -57,7 +57,7 @@ jobs:
           tags: |
             ${{ matrix.runtime.name }}
             
-      - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
+      - name: Write Dockerfile for ${{ matrix.runtime.name }}
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-win/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-win/Dockerfile
 
@@ -65,7 +65,7 @@ jobs:
           cat gtk4-cross-win/Dockerfile
           echo ${{ steps.meta.outputs.tags }}
       
-      - name: Build / push ${{ matrix.runtime.name }}
+      - name: Build / Push ${{ matrix.runtime.name }}
         uses: docker/build-push-action@v4
         continue-on-error: false
         with:
