@@ -102,4 +102,7 @@ RUN . ~/.cargo/env && \
 # Set default linker to the GCC linker
 ADD rust/cargo.config ~/.cargo/config
 
+# Cleanup /tmp
+RUN rm -rf /tmp/*
+
 CMD ["/bin/bash"]
