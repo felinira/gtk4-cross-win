@@ -1,7 +1,7 @@
 on:
   pull_request:
 
-name: Test container images without deployment
+name: Test container images
 jobs:
   test:
     uses: ./.github/workflows/docker.yml
