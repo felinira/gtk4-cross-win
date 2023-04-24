@@ -26,7 +26,7 @@ cp -T /usr/share/icons/hicolor/index.theme $OUT/share/icons/hicolor/index.theme
 
 # Adwaita icon theme
 mkdir -p $OUT/share/icons
-cp -T /usr/share/icons/Adwaita $OUT/share/icons/Adwaita
+cp -rT /usr/share/icons/Adwaita $OUT/share/icons/Adwaita
 
 # Pixbuf stuff, in order to get SVGs (scalable icons) to load
 mkdir -p $OUT/lib/gdk-pixbuf-2.0
