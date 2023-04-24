@@ -93,4 +93,13 @@ RUN ninja all && ninja install
 # Return to the current working directory
 WORKDIR /mnt
 
+## RUST
+# Setup rust
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN . ~/.cargo/env && \
+    rustup target add x86_64-pc-windows-gnu
+
+# Set default linker to the GCC linker
+ADD rust/cargo.config ~/.cargo/config
+
 CMD ["/bin/bash"]

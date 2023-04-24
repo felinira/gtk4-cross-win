@@ -9,13 +9,13 @@ Images can be found on [GitHub container repository](https://github.com/felinira
 Example for GTK 4.10:
 
 ```bash
-docker pull ghcr.io/felinira/gtk4-cross:rust-gtk-4.10
+docker pull ghcr.io/felinira/gtk4-cross-win:gtk-4.10
 ```
 
 Or nightly
 
 ```bash
-docker pull ghcr.io/felinira/gtk4-cross:rust-gtk-nightly
+docker pull ghcr.io/felinira/gtk4-cross-win:gtk-nightly
 ```
 
 ## Cross compilation
@@ -25,13 +25,13 @@ docker pull ghcr.io/felinira/gtk4-cross:rust-gtk-nightly
 Create a container inside your project and run it
 
 ```bash
-docker run -ti -v `pwd`:/mnt gtk4-cross-rust
+docker run -ti -v `pwd`:/mnt gtk4-cross-win
 ```
 
 If your Docker host uses SELinux and you're getting errors about Cargo.toml not being found when trying to build, you may need to add `:z` to the end of the volume mount path, like so:
 
 ```bash
-docker run -ti -v `pwd`:/mnt:z gtk4-cross-rust
+docker run -ti -v `pwd`:/mnt:z gtk4-cross-win
 ```
 
 Then run `build` to build the project and `package` to package it into a zip file.
@@ -78,7 +78,7 @@ ln ../package.sh package.sh
 - create a new `Dockerfile`, and put in the following boilerplate to have a runnable container.
 
 ```docker
-FROM gtk4-cross-base
+FROM gtk4-cross-win
 
 ADD build.sh /usr/bin
 RUN chmod +x /usr/bin/build.sh

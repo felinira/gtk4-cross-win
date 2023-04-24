@@ -59,45 +59,20 @@ jobs:
             
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
-          sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
+          sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-win/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-win/Dockerfile
 
       - run: |
-          cat gtk4-cross-base-hub/Dockerfile
+          cat gtk4-cross-win/Dockerfile
           echo ${{ steps.meta.outputs.tags }}
       
       - name: Build / push ${{ matrix.runtime.name }}
         uses: docker/build-push-action@v4
         continue-on-error: false
         with:
-          context: ./gtk4-cross-base-hub
-          file: ./gtk4-cross-base-hub/Dockerfile
+          context: ./gtk4-cross-win
+          file: ./gtk4-cross-win/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Extract metadata (tags, labels) for rust-${{ matrix.runtime.name }}
-        id: meta_rust
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            rust-${{ matrix.runtime.name }}
-
-      - name: Write the Dockerfile for the rust-${{ matrix.runtime.name }} runtime
-        run: |
-          sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
-
-      - name: Build / push rust-${{ matrix.runtime.name }}
-        uses: docker/build-push-action@v4
-        continue-on-error: false
-        with:
-          context: ./gtk4-cross-rust
-          file: ./gtk4-cross-rust/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta_rust.outputs.tags }}
-          labels: ${{ steps.meta_rust.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
