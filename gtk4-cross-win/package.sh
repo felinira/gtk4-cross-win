@@ -20,9 +20,9 @@ glib-compile-schemas $MINGW_PREFIX/share/glib-2.0/schemas/
 mkdir -p $OUT/share/glib-2.0/schemas/
 cp -T $MINGW_PREFIX/share/glib-2.0/schemas/gschemas.compiled $OUT/share/glib-2.0/schemas/gschemas.compiled
 
-# HiColor icon theme (only the index file required at minimum)
-mkdir -p $OUT/share/icons/hicolor
-cp -T /usr/share/icons/hicolor/index.theme $OUT/share/icons/hicolor/index.theme
+# Adwaita icon theme
+mkdir -p $OUT/share/icons
+cp -T /usr/share/icons/Adwaita $OUT/share/icons/Adwaita
 
 # Pixbuf stuff, in order to get SVGs (scalable icons) to load
 mkdir -p $OUT/lib/gdk-pixbuf-2.0
