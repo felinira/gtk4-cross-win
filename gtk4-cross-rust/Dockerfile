@@ -1,4 +1,4 @@
-FROM ghcr.io/66leo66/gtk4-cross:%GTKTAG%
+FROM ghcr.io/felinira/gtk4-cross-win:%GTKTAG%
 
 # Add build.sh
 ADD build.sh /usr/bin/build
