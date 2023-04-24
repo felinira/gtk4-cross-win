@@ -1,7 +1,11 @@
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      should-deploy:
+        required: true
+        type: boolean
 
-name: Docker images
+name: Build / Deploy Docker Images
 
 env:
   REGISTRY: ghcr.io
@@ -20,6 +24,9 @@ jobs:
     strategy:
       matrix:
         runtime:
+          - name: gtk-nightly
+            gtktag: main
+            adwtag: main
           - name: gtk-4.10
             gtktag: 4.10.1
             adwtag: 1.3.1
@@ -63,31 +70,32 @@ jobs:
         with:
           context: ./gtk4-cross-base-hub
           file: ./gtk4-cross-base-hub/Dockerfile
-          push: true
+          push: ${{ inputs.should-deploy }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-        
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta_rust
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: |
-            ghcr.io/66Leo66/gtk4-cross
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             rust-${{ matrix.runtime.name }}
 
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
+
       - name: Build & push the rust-${{ matrix.runtime.name }} image to Docker Hub
         uses: docker/build-push-action@v2.2.2
         continue-on-error: false
         with:
           context: ./gtk4-cross-rust
           file: ./gtk4-cross-rust/Dockerfile
-          push: true
+          push: ${{ inputs.should-deploy }}
           tags: ${{ steps.meta_rust.outputs.tags }}
           labels: ${{ steps.meta_rust.outputs.labels }}
           cache-from: type=gha

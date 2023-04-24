@@ -2,22 +2,20 @@
 
 ## Prebuilt images
 
-Images can be found on [DockerHub](https://hub.docker.com/r/66Leo66/gtk4-cross/tags) or [GitHub container repository](https://github.com/66Leo66/gtk4-cross/pkgs/container/gtk4-cross).
-
-### To pull from DockerHub
-
-Example for GTK 4.8:
-
-```bash
-docker pull 66Leo66/gtk4-cross:rust-gtk-4.8
-```
+Images can be found on [GitHub container repository](https://github.com/felinira/gtk4-cross-win/pkgs/container/gtk4-cross-win).
 
 ### To pull from GitHub container repository
 
-Example for GTK 4.8:
+Example for GTK 4.10:
 
 ```bash
-docker pull ghcr.io/66Leo66/gtk4-cross:rust-gtk-4.8
+docker pull ghcr.io/felinira/gtk4-cross:rust-gtk-4.10
+```
+
+Or nightly
+
+```bash
+docker pull ghcr.io/felinira/gtk4-cross:rust-gtk-nightly
 ```
 
 ## Cross compilation

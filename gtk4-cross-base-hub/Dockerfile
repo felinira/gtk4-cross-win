@@ -9,7 +9,7 @@ WORKDIR /root/pe-util/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
-FROM fedora:37
+FROM fedora:38
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # RUN . ~/.cargo/env 
 # Set the rust linker to gcc
@@ -17,7 +17,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN dnf install -y gcc
 RUN . ~/.cargo/env && cargo install --git https://github.com/mglolenstine/peldd_dependency_scanner.git
 
-FROM fedora:37
+FROM fedora:38
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
 RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
@@ -75,11 +75,16 @@ RUN wine $MINGW_PREFIX/bin/gdk-pixbuf-query-loaders.exe --update-cache
 WORKDIR /tmp/gtk
 RUN x86_64-meson build -Dintrospection=disabled --wrap-mode=default
 WORKDIR /tmp/gtk/build
-RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dtracker=disabled
+RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dtracker=disabled -Dbuild-examples=false -Dbuild-tests=false
 RUN ninja all && ninja install
 
 # Build and install libadwaita
 WORKDIR /tmp/libadwaita
+
+# Patch adw-main
+ADD libadwaita-remove-appstream-dep.patch /tmp/libadwaita
+RUN if [[ "%ADWTAG%" == main ]]; then git apply libadwaita-remove-appstream-dep.patch; fi
+
 RUN x86_64-meson -Dintrospection=disabled -Dexamples=false -Dvapi=false build --wrap-mode=default
 WORKDIR /tmp/libadwaita/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
