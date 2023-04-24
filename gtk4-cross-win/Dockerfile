@@ -22,14 +22,6 @@ COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
 RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
 
-# Clone the gtk4 repository (Move after the mingw setup for efficiency later)
-WORKDIR /tmp
-RUN git clone --depth=1 --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
-
-# Clone the libadwaita repository (Move after the mingw setup for efficiency later)
-WORKDIR /tmp
-RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwaita.git
-
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
 RUN dos2unix /usr/bin/x86_64-meson
@@ -48,6 +40,10 @@ RUN chmod +x /usr/bin/package
 # Update with the new toolchain file
 ADD toolchain-mingw64.meson /usr/share/mingw
 RUN dos2unix /usr/share/mingw/toolchain-mingw64.meson
+
+# Clone the gtk4 repository
+WORKDIR /tmp
+RUN git clone --depth=1 --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
 
 # Hacks for GTK4 to compile
 #ENV PKG_CONFIG_PATH /usr/x86_64-w64-mingw32/lib/pkgconfig
@@ -78,6 +74,10 @@ WORKDIR /tmp/gtk/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dtracker=disabled -Dbuild-examples=false -Dbuild-tests=false
 RUN ninja all && ninja install
 
+# Clone the libadwaita repository (Move after the mingw setup for efficiency later)
+WORKDIR /tmp
+RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwaita.git
+
 # Build and install libadwaita
 WORKDIR /tmp/libadwaita
 
@@ -92,6 +92,10 @@ RUN ninja all && ninja install
 
 # Return to the current working directory
 WORKDIR /mnt
+
+## Commonly used packages
+RUN dnf install wget yelp-tools librsvg2-tools ImageMagick -y
+RUN dnf clean all -y
 
 ## RUST
 # Setup rust

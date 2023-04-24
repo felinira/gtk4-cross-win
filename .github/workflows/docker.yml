@@ -56,7 +56,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             ${{ matrix.runtime.name }}
-            
+
       - name: Write Dockerfile for ${{ matrix.runtime.name }}
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-win/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-win/Dockerfile
@@ -64,7 +64,7 @@ jobs:
       - run: |
           cat gtk4-cross-win/Dockerfile
           echo ${{ steps.meta.outputs.tags }}
-      
+
       - name: Build / Push ${{ matrix.runtime.name }}
         uses: docker/build-push-action@v4
         continue-on-error: false
