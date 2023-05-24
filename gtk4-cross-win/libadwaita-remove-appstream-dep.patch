@@ -45,7 +45,7 @@ index 3638d4bc..1c14b1fc 100644
  
  install_data(
 diff --git a/src/adw-about-window.c b/src/adw-about-window.c
-index b30a0dd1..c5a4f7a3 100644
+index 4bfbdc48..1446c3eb 100644
 --- a/src/adw-about-window.c
 +++ b/src/adw-about-window.c
 @@ -6,7 +6,10 @@
@@ -59,7 +59,7 @@ index b30a0dd1..c5a4f7a3 100644
  
  #include "adw-about-window.h"
  
-@@ -389,12 +392,21 @@ activate_link_default_cb (AdwAboutWindow *self,
+@@ -388,12 +391,21 @@ activate_link_default_cb (AdwAboutWindow *self,
    return GDK_EVENT_STOP;
  }
  
@@ -81,7 +81,7 @@ index b30a0dd1..c5a4f7a3 100644
  
  static void
  update_credits_legal_group (AdwAboutWindow *self)
-@@ -1996,6 +2008,9 @@ GtkWidget *
+@@ -1963,6 +1975,9 @@ GtkWidget *
  adw_about_window_new_from_appdata (const char *resource_path,
                                     const char *release_notes_version)
  {
@@ -91,7 +91,7 @@ index b30a0dd1..c5a4f7a3 100644
    AdwAboutWindow *self;
    GFile *appdata_file;
    char *appdata_uri;
-@@ -2013,6 +2028,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -1980,6 +1995,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    appdata_file = g_file_new_for_uri (appdata_uri);
  
    self = ADW_ABOUT_WINDOW (adw_about_window_new ());
@@ -99,7 +99,7 @@ index b30a0dd1..c5a4f7a3 100644
    metadata = as_metadata_new ();
  
    if (!as_metadata_parse_file (metadata, appdata_file, AS_FORMAT_KIND_UNKNOWN, &error)) {
-@@ -2124,6 +2140,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -2091,6 +2107,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    g_free (appdata_uri);
  
    return GTK_WIDGET (self);
@@ -108,19 +108,10 @@ index b30a0dd1..c5a4f7a3 100644
  
  /**
 diff --git a/src/meson.build b/src/meson.build
-index 5fbbeb07..0ca8b37f 100644
+index 2a83a71c..29ba80d4 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -257,19 +257,22 @@ gtk_min_version = '>= 4.9.5'
- 
- gio_dep = dependency('gio-2.0', version: glib_min_version)
- gtk_dep = dependency('gtk4', version: gtk_min_version)
--appstream_dep = dependency('appstream',
--  fallback : ['appstream', 'appstream_dep']
--)
- 
- libadwaita_deps = [
-   dependency('glib-2.0', version: glib_min_version),
+@@ -274,10 +274,16 @@ libadwaita_deps = [
    dependency('fribidi'),
    gio_dep,
    gtk_dep,
