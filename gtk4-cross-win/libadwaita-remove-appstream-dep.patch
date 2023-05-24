@@ -108,10 +108,20 @@ index 4bfbdc48..1446c3eb 100644
  
  /**
 diff --git a/src/meson.build b/src/meson.build
-index 2a83a71c..29ba80d4 100644
+index 2a83a71c..5d089afe 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -274,10 +274,16 @@ libadwaita_deps = [
+@@ -264,20 +264,23 @@ gtk_min_version = '>= 4.11.2'
+ 
+ gio_dep = dependency('gio-2.0', version: glib_min_version)
+ gtk_dep = dependency('gtk4', version: gtk_min_version)
+-appstream_dep = dependency('appstream',
+-  fallback : ['appstream', 'appstream_dep'],
+-  default_options : ['systemd=false', 'apidocs=false', 'install-docs=false'],
+-)
+ 
+ libadwaita_deps = [
+   dependency('glib-2.0', version: glib_min_version),
    dependency('fribidi'),
    gio_dep,
    gtk_dep,
@@ -121,7 +131,8 @@ index 2a83a71c..29ba80d4 100644
  
 +if host_machine.system() != 'windows'
 +  appstream_dep = dependency('appstream',
-+    fallback : ['appstream', 'appstream_dep']
++    fallback : ['appstream', 'appstream_dep'],
++    default_options : ['systemd=false', 'apidocs=false', 'install-docs=false'],
 +  )
 +  libadwaita_deps += appstream_dep
 +endif
