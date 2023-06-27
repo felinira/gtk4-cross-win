@@ -1,8 +1,8 @@
 diff --git a/demo/data/meson.build b/demo/data/meson.build
-index 3638d4bc..1c14b1fc 100644
+index 1687dee2..c9ebe0f8 100644
 --- a/demo/data/meson.build
 +++ b/demo/data/meson.build
-@@ -28,25 +28,23 @@ appdata_config = configuration_data()
+@@ -34,25 +34,23 @@ appdata_config = configuration_data()
  appdata_config.set('BUILD_VERSION', meson.project_version())
  appdata_config.set('BUILD_DATE', today)
  
@@ -45,7 +45,7 @@ index 3638d4bc..1c14b1fc 100644
  
  install_data(
 diff --git a/src/adw-about-window.c b/src/adw-about-window.c
-index 4bfbdc48..1446c3eb 100644
+index 8564d4fa..f18a9808 100644
 --- a/src/adw-about-window.c
 +++ b/src/adw-about-window.c
 @@ -6,7 +6,10 @@
@@ -81,7 +81,7 @@ index 4bfbdc48..1446c3eb 100644
  
  static void
  update_credits_legal_group (AdwAboutWindow *self)
-@@ -1963,6 +1975,9 @@ GtkWidget *
+@@ -1964,6 +1976,9 @@ GtkWidget *
  adw_about_window_new_from_appdata (const char *resource_path,
                                     const char *release_notes_version)
  {
@@ -91,7 +91,7 @@ index 4bfbdc48..1446c3eb 100644
    AdwAboutWindow *self;
    GFile *appdata_file;
    char *appdata_uri;
-@@ -1980,6 +1995,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -1981,6 +1996,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    appdata_file = g_file_new_for_uri (appdata_uri);
  
    self = ADW_ABOUT_WINDOW (adw_about_window_new ());
@@ -99,7 +99,7 @@ index 4bfbdc48..1446c3eb 100644
    metadata = as_metadata_new ();
  
    if (!as_metadata_parse_file (metadata, appdata_file, AS_FORMAT_KIND_UNKNOWN, &error)) {
-@@ -2091,6 +2107,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -2092,6 +2108,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    g_free (appdata_uri);
  
    return GTK_WIDGET (self);
@@ -108,10 +108,10 @@ index 4bfbdc48..1446c3eb 100644
  
  /**
 diff --git a/src/meson.build b/src/meson.build
-index 2a83a71c..5d089afe 100644
+index 5f055fa7..1e4ace57 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -264,20 +264,23 @@ gtk_min_version = '>= 4.11.2'
+@@ -271,20 +271,23 @@ gtk_min_version = '>= 4.11.2'
  
  gio_dep = dependency('gio-2.0', version: glib_min_version)
  gtk_dep = dependency('gtk4', version: gtk_min_version)
