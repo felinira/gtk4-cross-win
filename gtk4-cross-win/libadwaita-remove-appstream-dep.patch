@@ -1,51 +1,5 @@
-diff --git a/demo/data/meson.build b/demo/data/meson.build
-index 1687dee2..c9ebe0f8 100644
---- a/demo/data/meson.build
-+++ b/demo/data/meson.build
-@@ -34,25 +34,23 @@ appdata_config = configuration_data()
- appdata_config.set('BUILD_VERSION', meson.project_version())
- appdata_config.set('BUILD_DATE', today)
- 
--if target_system != 'windows'
--  appstream_file = i18n.merge_file(
--    input: configure_file(
--      input: 'org.gnome.Adwaita1.Demo.metainfo.xml.in.in',
--      output: 'org.gnome.Adwaita1.Demo.metainfo.xml.in',
--      configuration: appdata_config
--    ),
--    output: 'org.gnome.Adwaita1.Demo.metainfo.xml',
--    po_dir: '../../po',
--    install: true,
--    install_dir: datadir / 'metainfo'
--  )
-+appstream_file = i18n.merge_file(
-+  input: configure_file(
-+    input: 'org.gnome.Adwaita1.Demo.metainfo.xml.in.in',
-+    output: 'org.gnome.Adwaita1.Demo.metainfo.xml.in',
-+    configuration: appdata_config
-+  ),
-+  output: 'org.gnome.Adwaita1.Demo.metainfo.xml',
-+  po_dir: '../../po',
-+  install: true,
-+  install_dir: datadir / 'metainfo'
-+)
- 
--  appstreamcli = find_program('appstreamcli', required: false)
--  if appstreamcli.found()
--    test('Validate appstream file', appstreamcli,
--      args: ['validate', '--no-net', '--explain', appstream_file]
--    )
--  endif
-+appstreamcli = find_program('appstreamcli', required: false)
-+if appstreamcli.found()
-+  test('Validate appstream file', appstreamcli,
-+    args: ['validate', '--no-net', '--explain', appstream_file]
-+  )
- endif
- 
- install_data(
 diff --git a/src/adw-about-window.c b/src/adw-about-window.c
-index 8564d4fa..f18a9808 100644
+index de0b820a..a383131d 100644
 --- a/src/adw-about-window.c
 +++ b/src/adw-about-window.c
 @@ -6,7 +6,10 @@
@@ -81,7 +35,7 @@ index 8564d4fa..f18a9808 100644
  
  static void
  update_credits_legal_group (AdwAboutWindow *self)
-@@ -1964,6 +1976,9 @@ GtkWidget *
+@@ -1951,6 +1963,9 @@ GtkWidget *
  adw_about_window_new_from_appdata (const char *resource_path,
                                     const char *release_notes_version)
  {
@@ -91,7 +45,7 @@ index 8564d4fa..f18a9808 100644
    AdwAboutWindow *self;
    GFile *appdata_file;
    char *appdata_uri;
-@@ -1981,6 +1996,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -1968,6 +1983,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    appdata_file = g_file_new_for_uri (appdata_uri);
  
    self = ADW_ABOUT_WINDOW (adw_about_window_new ());
@@ -99,7 +53,7 @@ index 8564d4fa..f18a9808 100644
    metadata = as_metadata_new ();
  
    if (!as_metadata_parse_file (metadata, appdata_file, AS_FORMAT_KIND_UNKNOWN, &error)) {
-@@ -2092,6 +2108,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
+@@ -2079,6 +2095,7 @@ adw_about_window_new_from_appdata (const char *resource_path,
    g_free (appdata_uri);
  
    return GTK_WIDGET (self);
@@ -108,10 +62,10 @@ index 8564d4fa..f18a9808 100644
  
  /**
 diff --git a/src/meson.build b/src/meson.build
-index 5f055fa7..1e4ace57 100644
+index f73d7250..d39387f1 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -271,20 +271,23 @@ gtk_min_version = '>= 4.11.2'
+@@ -271,20 +271,23 @@ gtk_min_version = '>= 4.11.3'
  
  gio_dep = dependency('gio-2.0', version: glib_min_version)
  gtk_dep = dependency('gtk4', version: gtk_min_version)
