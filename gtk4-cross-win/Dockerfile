@@ -20,7 +20,16 @@ RUN . ~/.cargo/env && cargo install --git https://github.com/mglolenstine/peldd_
 FROM fedora:39
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static mingw64-glib2 glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static mingw64-glib2 glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext mingw64-libyaml mingw64-libxmlb gperf libcurl-devel libyaml-devel libxml2-devel libzstd-devel libxmlb-devel libxslt-devel docbook-style-xsl -y && dnf clean all -y
+
+# Install appstream 1.0 on host
+WORKDIR /tmp
+RUN git clone --depth=1 --branch main https://github.com/ximion/appstream.git
+
+WORKDIR /tmp/appstream
+RUN meson build -Dprefix=/usr -Dstemming=false -Dsystemd=false -Dgir=false -Dsvg-support=false -Ddocs=false -Dapidocs=false -Dinstall-docs=false
+RUN ninja -C build
+RUN ninja -C build install
 
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
@@ -81,9 +90,11 @@ RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwa
 # Build and install libadwaita
 WORKDIR /tmp/libadwaita
 
-# Patch adw-main
-ADD libadwaita-remove-appstream-dep.patch /tmp/libadwaita
-RUN if [[ "%ADWTAG%" == main ]]; then git apply libadwaita-remove-appstream-dep.patch; fi
+# Patch adw
+ADD libadwaita-update-appstream.patch /tmp/libadwaita
+ADD libadwaita-1-4-update-appstream.patch /tmp/libadwaita
+RUN if [[ "%ADWTAG%" == "1.4.0" ]]; then git apply libadwaita-1-4-update-appstream.patch; fi
+RUN if [[ "%ADWTAG%" == "main" ]]; then git apply libadwaita-update-appstream.patch; fi
 
 RUN x86_64-meson -Dintrospection=disabled -Dexamples=false -Dvapi=false build --wrap-mode=default
 WORKDIR /tmp/libadwaita/build
