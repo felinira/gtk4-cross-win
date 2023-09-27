@@ -81,10 +81,6 @@ RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwa
 # Build and install libadwaita
 WORKDIR /tmp/libadwaita
 
-# Patch adw-main
-ADD libadwaita-remove-appstream-dep.patch /tmp/libadwaita
-RUN if [[ "%ADWTAG%" == main ]]; then git apply libadwaita-remove-appstream-dep.patch; fi
-
 RUN x86_64-meson -Dintrospection=disabled -Dexamples=false -Dvapi=false build --wrap-mode=default
 WORKDIR /tmp/libadwaita/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
