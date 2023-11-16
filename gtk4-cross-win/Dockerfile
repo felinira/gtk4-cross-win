@@ -91,10 +91,8 @@ RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwa
 WORKDIR /tmp/libadwaita
 
 # Patch adw
-ADD libadwaita-update-appstream.patch /tmp/libadwaita
 ADD libadwaita-1-4-update-appstream.patch /tmp/libadwaita
 RUN if [[ "%ADWTAG%" == "1.4.0" ]]; then git apply libadwaita-1-4-update-appstream.patch; fi
-RUN if [[ "%ADWTAG%" == "main" ]]; then git apply libadwaita-update-appstream.patch; fi
 
 RUN x86_64-meson -Dintrospection=disabled -Dexamples=false -Dvapi=false build --wrap-mode=default
 WORKDIR /tmp/libadwaita/build
