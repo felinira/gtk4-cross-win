@@ -24,6 +24,7 @@ RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk
 
 # Install appstream 1.0 on host
 WORKDIR /tmp
+ADD "https://api.github.com/repos/ximion/appstream/commits?per_page=1" latest_commit
 RUN git clone --depth=1 --branch main https://github.com/ximion/appstream.git
 
 WORKDIR /tmp/appstream
