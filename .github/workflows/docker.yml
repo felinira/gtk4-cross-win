@@ -32,7 +32,7 @@ jobs:
             gtktag: 4.10.5
             adwtag: 1.3.5
           - name: gnome-45
-            gtktag: 4.12.2
+            gtktag: 4.12.3
             adwtag: 1.4.0
       fail-fast: false
 
