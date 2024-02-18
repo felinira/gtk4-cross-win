@@ -79,9 +79,9 @@ RUN wine $MINGW_PREFIX/bin/gdk-pixbuf-query-loaders.exe --update-cache
 
 # Build and install GTK4
 WORKDIR /tmp/gtk
-RUN x86_64-meson build -Dintrospection=disabled --wrap-mode=default
+RUN x86_64-meson build -Dintrospection=disabled -Dvulkan=disabled -Dtracker=disabled --wrap-mode=default
 WORKDIR /tmp/gtk/build
-RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dtracker=disabled -Dbuild-examples=false -Dbuild-tests=false
+RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dbuild-examples=false -Dbuild-tests=false
 RUN ninja all && ninja install
 
 # Clone the libadwaita repository (Move after the mingw setup for efficiency later)
